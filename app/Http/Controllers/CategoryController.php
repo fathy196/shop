@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -12,8 +14,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return view('categories', compact('categories'));
+        $categories = Category::with('products')->latest()->get();
+        $products = Product::latest()->get();
+        return view('dashboard.index', compact('categories', 'products'));
     }
 
     /**
@@ -21,17 +24,17 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.categories.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        //
+        Category::create($request->validated());
+        return redirect()->route('categories.index')->with('success', "Category Created Successfully");
     }
-
     /**
      * Display the specified resource.
      */
@@ -45,15 +48,16 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('dashboard.categories.edit', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(CategoryRequest $request, Category $category)
     {
-        //
+        $category->update(['name' => $request->name]);
+        return redirect()->route('categories.index')->with('success', 'Category updated Successfully');
     }
 
     /**
@@ -61,6 +65,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect()->route('categories.index')->with("success", "Category Deleted Successfully");
     }
 }

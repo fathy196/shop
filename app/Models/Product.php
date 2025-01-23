@@ -20,4 +20,13 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function getImagePathAttribute()
+    {
+        if ($this->image) {
+            return 'storage/products/' . $this->image;
+        } else {
+            return "https://dummyimage.com/700x350/dee2e6/6c757d.jpg";
+        }
+    }
 }

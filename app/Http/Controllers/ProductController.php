@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -23,14 +25,34 @@ class ProductController extends Controller
     public function create()
     {
         //
+        $categories=Category::all();
+
+        return view('dashboard.products.create',compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         //
+        // dd($request->file('image'));
+        
+        $imageName=time().'.'.$request->file('image')->getClientOriginalExtension();
+        $request->file('image')->move(public_path('storage/products'), $imageName);
+
+        Product::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'quantity' => $request->quantity,
+            'is_active' => $request->is_active,
+            'image' => $imageName,
+            'category_id' => $request->category_id,
+        ]);
+
+        return redirect()->route('products.index')->with('success', 'Product created successfully.');
+
     }
 
     /**

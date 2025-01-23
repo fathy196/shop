@@ -11,8 +11,19 @@
         <!-- Section-->
 
         <!-- Footer-->
-        <footer class="py-5 bg-dark">
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2025</p></div>
+        <footer class="bg-dark text-light py-4">
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-md-6 text-center" style="margin-left: 20px;"> <!-- Added margin-left -->
+                        <p class="m-0">Copyright &copy; Your Website 2025. All Rights Reserved.</p>
+                    </div>
+                    <div class="col-md-6 text-center" style="margin-left: 20px;"> <!-- Added margin-left -->
+                        <a href="#!" class="text-light me-3"><i class="bi bi-facebook"></i></a>
+                        <a href="#!" class="text-light me-3"><i class="bi bi-twitter"></i></a>
+                        <a href="#!" class="text-light"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
