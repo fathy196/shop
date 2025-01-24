@@ -62,7 +62,9 @@ class ProductController extends Controller
     {
         // dd($product->all());
         $product = Product::with('category')->findOrFail($id);
-        return view('singleproduct',compact('product'));
+        $relatedProducts = $product->relatedProducts();
+
+        return view('singleproduct',compact('product', 'relatedProducts'));
     }
 
     /**
@@ -88,4 +90,18 @@ class ProductController extends Controller
     {
         //
     }
+
+    public function search(Request $request)
+{
+    // Get the search query from the request
+    $query = $request->input('query');
+
+    // Perform the search
+    $products = Product::where('name', 'like', "%$query%")
+                        ->orWhere('description', 'like', "%$query%")
+                        ->paginate(10); // Adjust pagination as needed
+
+    // Return the search results view
+    return view('productsSearch', compact('products', 'query'));
+}
 }

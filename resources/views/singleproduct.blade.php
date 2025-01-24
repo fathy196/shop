@@ -1,20 +1,174 @@
 @extends('layouts.master')
-@section('title', $product->name )  
-@section('content')
 
-<section class="py-5">
+@section('title', $product->name)
+
+@section('content')
+<style>
+    /* Gradient Background for Header */
+    .bg-gradient-dark {
+        background: linear-gradient(135deg, #434343, #000000);
+    }
+
+    /* Product Details Section */
+    .product-details {
+        background-color: #ffffff; /* White background */
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+    }
+
+    .product-details img {
+        border-radius: 12px;
+        transition: transform 0.3s ease;
+    }
+
+    .product-details img:hover {
+        transform: scale(1.05);
+    }
+
+    .product-details h1 {
+        font-family: 'Poppins', sans-serif;
+        font-size: 2.5rem;
+        color: #333; /* Dark text for product name */
+    }
+
+    .product-details .lead {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #555; /* Muted text for description */
+    }
+
+    .product-details .fs-5 {
+        font-size: 1.25rem;
+        color: #6a11cb; /* Purple for price */
+    }
+
+    .product-details .btn-outline-dark {
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: white;
+        border: none;
+        transition: background 0.3s ease;
+    }
+
+    .product-details .btn-outline-dark:hover {
+        background: linear-gradient(135deg, #2575fc, #6a11cb);
+    }
+
+    /* Related Products Section */
+    .related-products {
+        background-color: #f8f9fa; /* Light gray background */
+        padding: 1rem 0; /* Reduced padding */
+    }
+
+    .related-products h2 {
+        font-family: 'Poppins', sans-serif;
+        font-size: 2rem;
+        color: #333; /* Dark text for heading */
+    }
+
+    .related-products .card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background-color: #ffffff; /* White background for cards */
+    }
+
+    .related-products .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .related-products .card-img-top {
+        border-radius: 12px 12px 0 0;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .related-products .card-body {
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .related-products .card-title {
+        font-size: 1.25rem;
+        color: #333; /* Dark text for product name */
+    }
+
+    .related-products .card-text {
+        font-size: 1rem;
+        color: #555; /* Muted text for price */
+    }
+
+    .related-products .btn-outline-dark {
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: white;
+        border: none;
+        transition: background 0.3s ease;
+    }
+
+    .related-products .btn-outline-dark:hover {
+        background: linear-gradient(135deg, #2575fc, #6a11cb);
+    }
+
+    /* Dark Mode Support */
+    @media (prefers-color-scheme: dark) {
+        body {
+            background-color: #e0dcdc; /* Light gray for dark mode */
+            color: #ffffff;
+        }
+
+        .product-details {
+            background-color: #f7f5f5; /* Light gray for product details */
+            color: #333; /* Dark text for content */
+        }
+
+        .product-details h1,
+        .product-details .lead,
+        .product-details .fs-5 {
+            color: #333; /* Dark text for dark mode */
+        }
+
+        .related-products {
+            background-color: #e0dcdc; /* Light gray for related products */
+        }
+
+        .related-products h2,
+        .related-products .card-title,
+        .related-products .card-text {
+            color: #333; /* Dark text for dark mode */
+        }
+
+        .related-products .card {
+            background-color: #f7f5f5; /* Light gray for cards */
+        }
+    }
+</style>
+
+<!-- Header Section (Same as Homepage) -->
+<header class="bg-gradient-dark py-5">
     <div class="container px-4 px-lg-5 my-5">
-        <div class="row gx-4 gx-lg-5 align-items-center">
-            <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ asset($product->image_path)}}" alt="..." /></div>
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder mb-4" style="font-family: 'Poppins', sans-serif;">Shop in Style</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Discover our exclusive collection</p>
+        </div>
+    </div>
+</header>
+<!-- Product Details Section -->
+<section class="py-4"> <!-- Reduced padding -->
+    <div class="container px-4 px-lg-5 my-4"> <!-- Reduced margin -->
+        <div class="row gx-4 gx-lg-5 align-items-center product-details">
             <div class="col-md-6">
-                <div class="small mb-1">{{$product->category->name}}</div>
-                <h1 class="display-5 fw-bolder">{{$product->name}}</h1>
-                <div class="small mb-1">{{$product->quantity}} items lift</div>
+                <img class="card-img-top mb-5 mb-md-0" src="{{ asset($product->image_path) }}" alt="{{ $product->name }}" />
+            </div>
+            <div class="col-md-6">
+                <div class="small mb-1 text-muted">{{ $product->category->name }}</div>
+                <h1 class="display-5 fw-bolder">{{ $product->name }}</h1>
+                <div class="small mb-1 text-muted">{{ $product->quantity }} items left</div>
                 <div class="fs-5 mb-5">
-                    {{-- <span class="text-decoration-line-through">$45.00</span> --}}
-                    <span>EGP {{$product->price}}</span>
+                    <span>EGP {{ $product->price }}</span>
                 </div>
-                <p class="lead">{{$product->description}}</p>
+                <p class="lead">{{ $product->description }}</p>
                 <!-- Add to Cart Form -->
                 <form action="{{ route('cart.add') }}" method="POST">
                     @csrf
@@ -32,110 +186,38 @@
     </div>
 </section>
 
-<!-- Related items section-->
-<section class="py-5 bg-light">
-    <div class="container px-4 px-lg-5 mt-5">
-        <h2 class="fw-bolder mb-4">Related products</h2>
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Product image-->
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">Fancy Product</h5>
-                            <!-- Product price-->
-                            $40.00 - $80.00
+<!-- Related Products Section -->
+<section class="py-4 related-products"> <!-- Reduced padding -->
+    <div class="container px-4 px-lg-5 mt-4"> <!-- Reduced margin -->
+        <h2 class="fw-bold mb-4 text-center">Related Products</h2>
+        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 justify-content-center">
+            @if ($relatedProducts->isEmpty())
+                <div class="col-12 text-center">
+                    <p class="text-muted fs-5">No related products found.</p>
+                </div>
+            @else
+                @foreach ($relatedProducts as $relatedProduct)
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Product Image -->
+                        <img class="card-img-top" src="{{ asset($relatedProduct->image_path) }}" alt="{{ $relatedProduct->name }}" />
+                        <!-- Product Details -->
+                        <div class="card-body p-4 text-center">
+                            <h5 class="fw-bolder mb-2">{{ $relatedProduct->name }}</h5>
+                            <p class="text-muted fs-5 mb-0">EGP {{ $relatedProduct->price }}</p>
+                        </div>
+                        <!-- Product Actions -->
+                        <div class="card-footer p-4 pt-0 bg-light border-top-0 text-center">
+                            <a class="btn btn-outline-dark btn-sm px-4 text-uppercase fw-bold" href="{{ route('products.show', $relatedProduct->id) }}">
+                                <i class="bi bi-eye me-2"></i>View Details
+                            </a>
                         </div>
                     </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
-                    </div>
                 </div>
-            </div>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Sale badge-->
-                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                    <!-- Product image-->
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">Special Item</h5>
-                            <!-- Product reviews-->
-                            <div class="d-flex justify-content-center small text-warning mb-2">
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                            </div>
-                            <!-- Product price-->
-                            <span class="text-muted text-decoration-line-through">$20.00</span>
-                            $18.00
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Sale badge-->
-                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                    <!-- Product image-->
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">Sale Item</h5>
-                            <!-- Product price-->
-                            <span class="text-muted text-decoration-line-through">$50.00</span>
-                            $25.00
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col mb-5">
-                <div class="card h-100">
-                    <!-- Product image-->
-                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-                    <!-- Product details-->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <!-- Product name-->
-                            <h5 class="fw-bolder">Popular Item</h5>
-                            <!-- Product reviews-->
-                            <div class="d-flex justify-content-center small text-warning mb-2">
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                                <div class="bi-star-fill"></div>
-                            </div>
-                            <!-- Product price-->
-                            $40.00
-                        </div>
-                    </div>
-                    <!-- Product actions-->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                    </div>
-                </div>
-            </div>
+                @endforeach
+            @endif
         </div>
     </div>
 </section>
+
 @endsection

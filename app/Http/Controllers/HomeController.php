@@ -12,4 +12,9 @@ class HomeController extends Controller
         $products = Product::with('category')->latest()->get();
         return view('home', compact('products'));
     }
+    public function aboutus()
+    {
+        return view('aboutus');
+    }
+
 }

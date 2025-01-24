@@ -20,6 +20,15 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+    // Method to get related products
+    public function relatedProducts()
+    {
+        return $this->category->products()
+            ->where('id', '!=', $this->id) // Exclude the current product
+            ->inRandomOrder() // Randomize the results
+            ->limit(8) // Limit to 4 related products
+            ->get();
+    }
 
     public function getImagePathAttribute()
     {
