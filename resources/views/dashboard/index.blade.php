@@ -6,7 +6,7 @@
         <!-- Header Section -->
         <div class="text-center mb-5">
             <h1 class="display-4 text-primary fw-bold">Product Management</h1>
-            <p class="text-muted">Manage your products and categories easily from here.</p>
+            <p class="text-primary">Manage your products and categories easily from here.</p>
         </div>
 
         <!-- Products Section -->

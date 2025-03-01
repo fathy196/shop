@@ -33,7 +33,7 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         Category::create($request->validated());
-        return redirect()->route('categories.index')->with('success', "Category Created Successfully");
+        return redirect()->route('categories.index')->with('status', "Category Created Successfully");
     }
     /**
      * Display the specified resource.
@@ -57,7 +57,7 @@ class CategoryController extends Controller
     public function update(CategoryRequest $request, Category $category)
     {
         $category->update(['name' => $request->name]);
-        return redirect()->route('categories.index')->with('success', 'Category updated Successfully');
+        return redirect()->route('categories.index')->with('status', 'Category updated Successfully');
     }
 
     /**

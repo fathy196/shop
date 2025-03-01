@@ -25,9 +25,9 @@ class Product extends Model
     {
         return $this->category->products()
             ->where('id', '!=', $this->id) // Exclude the current product
-            ->inRandomOrder() // Randomize the results
-            ->limit(8) // Limit to 4 related products
-            ->get();
+            // ->inRandomOrder() // Randomize the results
+            // ->limit(8) // Limit to 4 related products
+            ->paginate(4);
     }
 
     public function getImagePathAttribute()

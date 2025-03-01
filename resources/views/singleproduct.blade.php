@@ -3,147 +3,7 @@
 @section('title', $product->name)
 
 @section('content')
-<style>
-    /* Gradient Background for Header */
-    .bg-gradient-dark {
-        background: linear-gradient(135deg, #434343, #000000);
-    }
 
-    /* Product Details Section */
-    .product-details {
-        background-color: #ffffff; /* White background */
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        padding: 2rem;
-    }
-
-    .product-details img {
-        border-radius: 12px;
-        transition: transform 0.3s ease;
-    }
-
-    .product-details img:hover {
-        transform: scale(1.05);
-    }
-
-    .product-details h1 {
-        font-family: 'Poppins', sans-serif;
-        font-size: 2.5rem;
-        color: #333; /* Dark text for product name */
-    }
-
-    .product-details .lead {
-        font-size: 1.1rem;
-        line-height: 1.8;
-        color: #555; /* Muted text for description */
-    }
-
-    .product-details .fs-5 {
-        font-size: 1.25rem;
-        color: #6a11cb; /* Purple for price */
-    }
-
-    .product-details .btn-outline-dark {
-        background: linear-gradient(135deg, #6a11cb, #2575fc);
-        color: white;
-        border: none;
-        transition: background 0.3s ease;
-    }
-
-    .product-details .btn-outline-dark:hover {
-        background: linear-gradient(135deg, #2575fc, #6a11cb);
-    }
-
-    /* Related Products Section */
-    .related-products {
-        background-color: #f8f9fa; /* Light gray background */
-        padding: 1rem 0; /* Reduced padding */
-    }
-
-    .related-products h2 {
-        font-family: 'Poppins', sans-serif;
-        font-size: 2rem;
-        color: #333; /* Dark text for heading */
-    }
-
-    .related-products .card {
-        border: none;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        background-color: #ffffff; /* White background for cards */
-    }
-
-    .related-products .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
-
-    .related-products .card-img-top {
-        border-radius: 12px 12px 0 0;
-        height: 200px;
-        object-fit: cover;
-    }
-
-    .related-products .card-body {
-        padding: 1.5rem;
-        text-align: center;
-    }
-
-    .related-products .card-title {
-        font-size: 1.25rem;
-        color: #333; /* Dark text for product name */
-    }
-
-    .related-products .card-text {
-        font-size: 1rem;
-        color: #555; /* Muted text for price */
-    }
-
-    .related-products .btn-outline-dark {
-        background: linear-gradient(135deg, #6a11cb, #2575fc);
-        color: white;
-        border: none;
-        transition: background 0.3s ease;
-    }
-
-    .related-products .btn-outline-dark:hover {
-        background: linear-gradient(135deg, #2575fc, #6a11cb);
-    }
-
-    /* Dark Mode Support */
-    @media (prefers-color-scheme: dark) {
-        body {
-            background-color: #e0dcdc; /* Light gray for dark mode */
-            color: #ffffff;
-        }
-
-        .product-details {
-            background-color: #f7f5f5; /* Light gray for product details */
-            color: #333; /* Dark text for content */
-        }
-
-        .product-details h1,
-        .product-details .lead,
-        .product-details .fs-5 {
-            color: #333; /* Dark text for dark mode */
-        }
-
-        .related-products {
-            background-color: #e0dcdc; /* Light gray for related products */
-        }
-
-        .related-products h2,
-        .related-products .card-title,
-        .related-products .card-text {
-            color: #333; /* Dark text for dark mode */
-        }
-
-        .related-products .card {
-            background-color: #f7f5f5; /* Light gray for cards */
-        }
-    }
-</style>
 
 <!-- Header Section (Same as Homepage) -->
 <header class="bg-gradient-dark py-5">
@@ -200,7 +60,7 @@
                 <div class="col mb-5">
                     <div class="card h-100">
                         <!-- Product Image -->
-                        <img class="card-img-top" src="{{ asset($relatedProduct->image_path) }}" alt="{{ $relatedProduct->name }}" />
+                        <img class="card-img-top-container position-relative" src="{{ asset($relatedProduct->image_path) }}" alt="{{ $relatedProduct->name }}" />
                         <!-- Product Details -->
                         <div class="card-body p-4 text-center">
                             <h5 class="fw-bolder mb-2">{{ $relatedProduct->name }}</h5>
@@ -217,6 +77,7 @@
                 @endforeach
             @endif
         </div>
+        {{$relatedProducts->links('layouts.components.pagination')}}
     </div>
 </section>
 

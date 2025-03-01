@@ -51,7 +51,7 @@ class ProductController extends Controller
             'category_id' => $request->category_id,
         ]);
 
-        return redirect()->route('products.index')->with('success', 'Product created successfully.');
+        return redirect()->route('products.index')->with('status', 'Product created successfully.');
 
     }
 

@@ -3,54 +3,6 @@
 @section('title', 'Shop Homepage')
 
 @section('content')
-<style>
-/* Gradient Background for Header */
-.bg-gradient-dark {
-        background: linear-gradient(135deg, #434343, #000000);
-    }
-
-    /* Card Hover Effect */
-    .card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border-radius: 12px;
-    }
-    .card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Button Hover Gradient */
-    .btn-hover-gradient {
-        background: linear-gradient(135deg, #6a11cb, #2575fc);
-        border: none;
-        color: white;
-        transition: background 0.3s ease;
-    }
-    .btn-hover-gradient:hover {
-        background: linear-gradient(135deg, #2575fc, #6a11cb);
-    }
-
-    /* Responsive Typography */
-    h1 {
-        font-size: clamp(2rem, 5vw, 3.5rem);
-    }
-
-    /* Dark Mode Support */
-    @media (prefers-color-scheme: dark) {
-        body {
-            background-color: #e0dcdc;
-            color: #ffffff;
-        }
-        .card {
-            background-color: #f7f5f5;
-            border-color: #333;
-        }
-        .text-muted {
-            color: #a0a0a0 !important;
-        }
-    }
-
-</style>
 <!-- Header with Gradient Background -->
 <header class="bg-gradient-dark py-5">
     <div class="container px-4 px-lg-5 my-5">

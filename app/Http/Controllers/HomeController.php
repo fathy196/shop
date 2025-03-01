@@ -9,7 +9,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->inRandomOrder()->get();
+        $products = Product::with('category')->inRandomOrder()->paginate(8);
         return view('home', compact('products'));
     }
     public function aboutus()

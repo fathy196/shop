@@ -3,123 +3,6 @@
 @section('title', 'Your Cart')
 
 @section('content')
-<style>
-    /* Gradient Background for Header */
-    .bg-gradient-cart {
-        background: linear-gradient(135deg, #434343, #000000);
-    }
-
-    /* Modern Typography */
-    h1 {
-        font-family: 'Poppins', sans-serif;
-        font-size: clamp(2rem, 5vw, 3rem);
-    }
-
-    /* Table Styling */
-    .table-cart {
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .table-cart th {
-        background-color: #000000;
-        color: rgb(7, 7, 7);
-        font-weight: 600;
-    }
-
-    .table-cart td {
-        vertical-align: middle;
-    }
-
-    /* Image Styling */
-    .cart-img {
-        width: 80px;
-        height: 80px;
-        object-fit: cover;
-        border-radius: 8px;
-    }
-
-    /* Quantity Input Styling */
-    .quantity-input {
-        width: 80px;
-        margin: auto;
-        text-align: center;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-        padding: 5px;
-    }
-
-    /* Button Styling */
-    .btn-cart {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .btn-cart:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Cart Summary Styling */
-    .cart-summary {
-        background-color: #0d0d0d;
-        border-radius: 12px;
-        padding: 20px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Dark Mode Support */
-    @media (prefers-color-scheme: dark) {
-        body {
-            background-color: #c1c1c1;
-            color: #ffffff;
-        }
-        .table-cart th {
-            background-color: #efecec;
-        }
-        .table-cart td {
-            background-color: #efecec;
-            color: #0d0c0c;
-        }
-        .cart-summary {
-            background-color: #efecec;
-            color: #121111;
-        }
-        .text-muted {
-            color: #0c0b0b !important;
-        }
-    }
-
-    /* Empty Cart Styling */
-    .empty-cart {
-        background-color: #ffffff;
-        border-radius: 12px;
-        padding: 40px;
-        text-align: center;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-
-    .empty-cart i {
-        font-size: 3rem;
-        color: #6a11cb;
-    }
-
-    .empty-cart p {
-        font-size: 1.2rem;
-        color: #555;
-    }
-
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-        .cart-img {
-            width: 60px;
-            height: 60px;
-        }
-        .quantity-input {
-            width: 60px;
-        }
-    }
-</style>
     <div class="container my-5">
     <h1 class="mb-4 text-center text-dark fw-bold">Your Shopping Cart</h1>
 
@@ -160,12 +43,18 @@
                                 <td class="text-center">
                                     <input type="number" name="quantity[{{ $item->product_id }}]"
                                         value="{{ $item->quantity }}" min="1" class="form-control quantity-input">
+                                        @error('quantity.'.$item->product_id)
+                                        <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                 </td>
                                 <td class="text-center">EGP {{ number_format($item->quantity * $item->price, 2) }}</td>
                                 <td class="text-center">
 
-                                    <button type="submit" class="btn btn-sm btn-danger"
+                                    {{-- <button type="submit" class="btn btn-sm btn-danger"
                                         onclick="removeItem({{ $item->id }})">
+                                        <i class="bi bi-trash"></i> Remove
+                                    </button> --}}
+                                    <button  form="delete-form-{{ $item->id }}" class="btn btn-sm btn-danger">
                                         <i class="bi bi-trash"></i> Remove
                                     </button>
                                 </td>
@@ -173,7 +62,12 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
+                <div class="mt-4 text-end">
+                    <button type="submit" class="btn btn-outline-primary btn-cart">
+                        <i class="bi bi-arrow-clockwise"></i> Update Cart
+                    </button>
+                </div>
+            </form>
 
             <div class="mt-4 text-end">
                 <div class="cart-summary">
@@ -193,35 +87,24 @@
                     </div>
                 </div>
 
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-outline-primary btn-cart">
-                        <i class="bi bi-arrow-clockwise"></i> Update Cart
-                    </button>
+                
                     {{-- <a href="{{ route('checkout') }}" class="btn btn-success ms-2 btn-cart">
                         <i class="bi bi-credit-card"></i> Proceed to Checkout
                     </a> --}}
                 </div>
             </div>
-        </form>
     @endif
 </div>
 
-    {{-- this script for handling remove cart --}}
-    <script>
-        function removeItem(itemId) {
-            if (confirm('Are you sure you want to remove this item?')) {
-                fetch(`/cart/remove/${itemId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}', // Include CSRF token
-                        'Content-Type': 'application/json'
-                    }
-                }).then(response => {
-                    if (response.ok) {
-                        window.location.reload(); // Reload the page to reflect changes
-                    }
-                });
-            }
-        }
-    </script>
+{{-- todo: --}}
+@foreach ($cartItems as $item)
+    
+<form method="post" action="{{route('cart.remove',$item->id)}}" id="delete-form-{{ $item->id }}" >
+    @csrf
+    @method('DELETE')
+    {{-- <input type="hidden" name="item_id" id="item_id"> --}}
+</form>
+@endforeach
+
+    
 @endsection
