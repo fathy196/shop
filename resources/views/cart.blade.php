@@ -99,12 +99,11 @@
 {{-- todo: --}}
 @foreach ($cartItems as $item)
     
-<form method="post" action="{{route('cart.remove',$item->id)}}" id="delete-form-{{ $item->id }}" >
+<form method="post" action="{{route('cart.remove',$item->id)}}" id="delete-form-{{ $item->id }}" class="delete-form">
     @csrf
     @method('DELETE')
     {{-- <input type="hidden" name="item_id" id="item_id"> --}}
 </form>
 @endforeach
 
-    
 @endsection

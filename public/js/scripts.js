@@ -16,3 +16,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }, 3000); // Disappears after 5 seconds
 });
+
+document.querySelectorAll('.delete-form').forEach(form => {
+    form.addEventListener('submit', function (e) {
+        if (!confirm('Are you sure you want to remove this product from your cart?')) {
+            e.preventDefault(); // Prevent form submission if user cancels
+        }
+    });
+});
