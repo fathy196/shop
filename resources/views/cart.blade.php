@@ -87,7 +87,12 @@
                     </div>
                 </div>
 
-                
+                <form action="{{ route('checkout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="mt-3 btn btn-success btn-cart">
+                        <i class="bi bi-credit-card"></i> Proceed to Checkout
+                    </button>
+                </form>
                     {{-- <a href="{{ route('checkout') }}" class="btn btn-success ms-2 btn-cart">
                         <i class="bi bi-credit-card"></i> Proceed to Checkout
                     </a> --}}

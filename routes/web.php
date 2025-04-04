@@ -2,11 +2,20 @@
 
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+
+Route::get('/send-email', [CategoryController::class, 'sendEmail']);
+
+
+Route::post('/pay', [PaymentController::class, 'initiatePayment'])->name('pay');
+Route::post('/paymob/callback', [PaymentController::class, 'handleCallback']);
+Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 
 
 // Route::get('home', function () {

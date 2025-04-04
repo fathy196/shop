@@ -6,12 +6,29 @@ use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestMail;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+//----------------------test-------------------------------
+// public function sendEmail()
+// {
+    //     $data = [
+        //         'name' => 'Fathy',
+        //     ];
+        
+        //     Mail::to('fathyabdelkader8@gmail.com')->send(new TestMail($data));
+        
+        //     return 'Email sent successfully!';
+        // }
+        
+//----------------------test-------------------------------
+
     public function index()
     {
         $categories = Category::with('products')->latest()->get();
