@@ -30,6 +30,9 @@ class ProductRequest extends FormRequest
         'image' => 'required|image|max:2048',
         'category_id' => 'required|exists:categories,id',
         ];
+        if (request()->ismethod('put')) {
+            $rules['image'] = 'nullable|image|mimes:jpeg,png,jpg,gif,svg,jfif|max:2048';
+        }
         return $rules;
     }
 }

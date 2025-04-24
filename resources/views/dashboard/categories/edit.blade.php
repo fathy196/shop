@@ -1,11 +1,11 @@
-@extends('layouts.master')
+@extends('dashboard.layouts.app')
 @section('title','Edit Category')
 {{-- @section('categories','active') --}}
 @section('content')
 <div class="container">
     {{-- @DD(session()->all()) --}}
     <h3>Edit Category  {{$category->name}} </h2>
-    <form  action="{{route('categories.update', $category->id)}}" method="POST">
+    <form  action="{{route('dashboard.categories.update', $category->id)}}" method="POST">
         @csrf
         @method('PUT')
 

@@ -31,9 +31,8 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $categories = Category::with('products')->latest()->get();
-        $products = Product::latest()->get();
-        return view('dashboard.index', compact('categories', 'products'));
+        $categories = Category::withCount('products')->latest()->paginate(10);
+        return view('dashboard.categories.index', compact('categories'));
     }
 
     /**
@@ -50,7 +49,7 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         Category::create($request->validated());
-        return redirect()->route('categories.index')->with('status', "Category Created Successfully");
+        return redirect()->route('dashboard.categories.index')->with('status', "Category Created Successfully");
     }
     /**
      * Display the specified resource.
@@ -74,7 +73,7 @@ class CategoryController extends Controller
     public function update(CategoryRequest $request, Category $category)
     {
         $category->update(['name' => $request->name]);
-        return redirect()->route('categories.index')->with('status', 'Category updated Successfully');
+        return redirect()->route('dashboard.categories.index')->with('status', 'Category updated Successfully');
     }
 
     /**
@@ -83,6 +82,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return redirect()->route('categories.index')->with("status", "Category Deleted Successfully");
+        return redirect()->route('dashboard.categories.index')->with("status", "Category Deleted Successfully");
     }
 }

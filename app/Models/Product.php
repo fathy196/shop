@@ -38,4 +38,8 @@ class Product extends Model
             return "https://dummyimage.com/700x350/dee2e6/6c757d.jpg";
         }
     }
+    public function getIsActiveStatusAttribute()
+    {
+        return $this->is_active ? 'Active' : 'Inactive';
+    }
 }

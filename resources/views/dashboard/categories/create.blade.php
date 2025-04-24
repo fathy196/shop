@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('dashboard.layouts.app')
 @section('title', 'Create Category')
 @section('content')
 
@@ -14,7 +14,7 @@
         <div class="col-lg-6 col-md-8">
             <div class="card shadow-sm">
                 <div class="card-body p-4">
-                    <form action="{{ route('categories.store') }}" method="POST">
+                    <form action="{{ route('dashboard.categories.store') }}" method="POST">
                         @csrf
 
                         <!-- Category Name -->

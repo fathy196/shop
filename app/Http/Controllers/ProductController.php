@@ -14,9 +14,12 @@ class ProductController extends Controller
      */
     public function index()
     {
-        
-        $products = Product::inRandomOrder()->get();
-        return view('products',compact('products'));
+
+        // $products = Product::inRandomOrder()->get();
+        // return view('products',compact('products'));
+
+        $products = Product::with('category')->latest()->paginate(15);
+        return view('dashboard.products.index', compact('products'));
     }
 
     /**
@@ -25,9 +28,9 @@ class ProductController extends Controller
     public function create()
     {
         //
-        $categories=Category::all();
+        $categories = Category::all();
 
-        return view('dashboard.products.create',compact('categories'));
+        return view('dashboard.products.create', compact('categories'));
     }
 
     /**
@@ -37,8 +40,12 @@ class ProductController extends Controller
     {
         //
         // dd($request->file('image'));
-        
-        $imageName=time().'.'.$request->file('image')->getClientOriginalExtension();
+
+        if ($request->hasFile('image')) {
+            $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
+        } else {
+            return redirect()->back()->withErrors(['image' => 'Image file is required.']);
+        }
         $request->file('image')->move(public_path('storage/products'), $imageName);
 
         Product::create([
@@ -51,8 +58,7 @@ class ProductController extends Controller
             'category_id' => $request->category_id,
         ]);
 
-        return redirect()->route('products.index')->with('status', 'Product created successfully.');
-
+        return redirect()->route('dashboard.products.index')->with('status', 'Product created successfully.');
     }
 
     /**
@@ -64,7 +70,7 @@ class ProductController extends Controller
         $product = Product::with('category')->findOrFail($id);
         $relatedProducts = $product->relatedProducts();
 
-        return view('singleproduct',compact('product', 'relatedProducts'));
+        return view('singleproduct', compact('product', 'relatedProducts'));
     }
 
     /**
@@ -72,15 +78,37 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        $categories = Category::all();
+        return view('dashboard.products.edit', compact('product', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        //
+        $imageName = $product->image;
+
+        if($request->hasfile('image')){
+            if(file_exists(public_path($product->image_path))){
+                unlink(public_path($product->image_path));
+            }
+            $imageName=time().'.'.$request->file('image')->getClientOriginalExtension();
+            $request->file('image')->move(public_path('storage/products'), $imageName);
+
+        }
+
+        $product->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+            'quantity' => $request->quantity,
+            'is_active' => $request->is_active,
+            'image' => $imageName ?? $product->image,
+            'category_id' => $request->category_id,
+        ]);
+
+        return redirect()->route('dashboard.products.index')->with('status', 'Product updated successfully.');
     }
 
     /**
@@ -88,20 +116,22 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return redirect()->route('dashboard.products.index')->with("status", "Product Deleted Successfully");
+    
     }
 
     public function search(Request $request)
-{
-    // Get the search query from the request
-    $query = $request->input('query');
+    {
+        // Get the search query from the request
+        $query = $request->input('query');
 
-    // Perform the search
-    $products = Product::where('name', 'like', "%$query%")
-                        ->orWhere('description', 'like', "%$query%")
-                        ->paginate(10); // Adjust pagination as needed
+        // Perform the search
+        $products = Product::where('name', 'like', "%$query%")
+            ->orWhere('description', 'like', "%$query%")
+            ->paginate(10); // Adjust pagination as needed
 
-    // Return the search results view
-    return view('productsSearch', compact('products', 'query'));
-}
+        // Return the search results view
+        return view('productsSearch', compact('products', 'query'));
+    }
 }

@@ -18,13 +18,13 @@
                         data-bs-toggle="dropdown" aria-expanded="false" style="color: #333;">
                         Shop
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {{-- <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{{ route('products.index') }}">All Products</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
                         <li><a class="dropdown-item" href="#!">Popular Items</a></li>
-                        <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                        <li><a class="dropdown-item" href="#!">New Arrivals</a></li> --}}
                     </ul>
                 </li>
             </ul>
@@ -45,7 +45,7 @@
                         <i class="bi bi-cart-fill me-1"></i>
                         Cart
                         <span class="position-absolute top-0 start-100 translate-middle badge bg-danger rounded-pill">
-                            {{ auth()->user()->cartItems->count() }}
+                            {{ auth()->user()->cartItems->sum('quantity') }}
                             <span class="visually-hidden">items in cart</span>
                         </span>
                     </a>
