@@ -11,7 +11,7 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         then: function () {
-            Route::middleware(['web','is_admin','auth'],)
+            Route::middleware(['web'],)
                 ->prefix('dashboard')
                 ->name('dashboard.')
                 ->group(base_path('routes/dashboard.php'));
@@ -21,6 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
         //
         $middleware->alias([
             'is_admin' => \App\Http\Middleware\IsAdmin::class,
+            'redirect_if_not_admin' => \App\Http\Middleware\RedirectIfNotAdmin::class,
+
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

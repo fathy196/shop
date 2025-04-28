@@ -70,7 +70,7 @@
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
             aria-expanded="true" aria-controls="collapsePages">
             <i class="fas fa-fw fa-folder"></i>
@@ -88,7 +88,7 @@
                 <a class="collapse-item" href="blank.html">Blank Page</a>
             </div>
         </div>
-    </li>
+    </li> --}}
 
     <!-- Nav Item - Charts -->
     {{-- <li class="nav-item">
@@ -109,7 +109,13 @@
             <span>Admins</span></a>
     </li>
 
-    <!-- Divider -->
+    {{-- <li class="nav-item {{ request()->is('dashboard/register') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('dashboard.register') }}">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Register Admins</span></a>
+        </li> --}}
+
+        <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 
     <!-- Sidebar Toggler (Sidebar) -->

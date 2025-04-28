@@ -17,11 +17,11 @@ class IsAdmin
     public function handle(Request $request, Closure $next): Response
     {
         // Check if the user is an admin
-        if (Auth::user()->is_admin == 1) {
+        if (Auth::check() && Auth::user()->is_admin == 1) {
             return $next($request);
         } else {
             // abort(403, 'Unauthorized action.');
-            return redirect()->route('home');
+            return redirect()->route('dashboard.login')->with('status', 'You are not authorized to access this page.');
         }
     }
 }

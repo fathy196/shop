@@ -40,7 +40,7 @@ class ProductController extends Controller
     {
         //
         // dd($request->file('image'));
-
+        
         if ($request->hasFile('image')) {
             $imageName = time() . '.' . $request->file('image')->getClientOriginalExtension();
         } else {
