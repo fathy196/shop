@@ -14,7 +14,7 @@ class HomeController extends Controller
     {
         $categories = Category::get();
         $products = Product::get();
-        $users = User::get();
+        $users = User::where('is_admin', false)->get();
 
 //  dd($categories);
         return view('dashboard.index',compact('categories','products','users'));
