@@ -21,7 +21,7 @@ class IsAdmin
             return $next($request);
         } else {
             // abort(403, 'Unauthorized action.');
-            return redirect()->route('dashboard.login')->with('status', 'You are not authorized to access this page.');
+            return redirect()->route('login')->with('status', 'You are not authorized to access this page.');
         }
     }
 }

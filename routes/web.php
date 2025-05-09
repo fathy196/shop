@@ -18,9 +18,9 @@ Route::post('/paymob/callback', [PaymentController::class, 'handleCallback']);
 Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 
 
-// Route::get('home', function () {
-//     return view('home');
-// });
+Route::get('emaill', function () {
+    return view('emails.welcome');
+});
 
 Route::get('/dashboard2', function () {
     return view('dashboard');
