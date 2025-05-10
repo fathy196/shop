@@ -42,4 +42,8 @@ class Product extends Model
     {
         return $this->is_active ? 'Active' : 'Inactive';
     }
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }
