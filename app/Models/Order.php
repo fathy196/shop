@@ -11,8 +11,20 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'total',
-        'status'
+        'status',
+        'shipping_address',
+        'payment_method'
     ];
+
+    public function getFormattedTotalAttribute()
+    {
+        return 'EGP ' . number_format($this->total + 80, 2);
+    }
+
+    public function getPaymentMethodTextAttribute()
+    {
+        return ucwords(str_replace('_', ' ', $this->payment_method));
+    }
 
     public function user(): BelongsTo
     {

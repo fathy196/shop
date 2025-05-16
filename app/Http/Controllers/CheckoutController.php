@@ -16,57 +16,61 @@ class CheckoutController extends Controller
         $this->paymob = $paymob;
     }
 
-    public function checkout(Request $request)
+    public function checkout(Request $request, $order_id)
     {
-       
+
         // Ensure user is logged in
         if (!Auth::check()) {
             return redirect()->route('login')->with('status', 'Please login to proceed');
         }
 
-        // Validate the cart has items
-        $cart = Auth::user()->cartItems;
-        if (empty($cart)) {
-            return redirect()->route('cart.view')->with('status', 'Your cart is empty!');
-        }
+        $user = Auth::user();
 
-        $totalAmount = collect($cart)->sum(fn($item) => $item['price'] * $item['quantity']) + 80; // Add shipping cost
+        $order = Order::with('items')->findOrFail($order_id);
 
-        // Step 1: Get Paymob authentication token
+        $totalAmount = $order->total + 80; // Shipping included
+
+        // Step 1: Get Paymob token
         $authToken = $this->paymob->getAuthToken();
-        
-        // Step 2: Create an order on Paymob
-        $order = $this->paymob->createOrder($authToken, $totalAmount, env('PAYMOB_MERCHANT_ID'));
 
-        if (!isset($order['id'])) {
-            return back()->with('status', 'Order creation failed');
+        // Step 2: Create order on Paymob
+        $paymobOrder = $this->paymob->createOrder($authToken, $totalAmount, env('PAYMOB_MERCHANT_ID'));
+
+        if (!isset($paymobOrder['id'])) {
+            return back()->with('status', 'Paymob order creation failed');
         }
 
-        // Billing information (dummy data for now)
         $billingData = [
-            "first_name" => Auth::user()->name ?? "fathy",
-            "last_name" => "Doe",
-            "email" => Auth::user()->email ?? "john@example.com",
-            "phone_number" => "01000000000",
+            "first_name" => $user->name,
+            "last_name" => "Customer",
+            "email" => $user->email,
+            "phone_number" => $user->phone,
             "city" => "Cairo",
             "country" => "EG",
-            "apartment" => "12",  // REQUIRED
-            "floor" => "3",       // REQUIRED
-            "street" => "123 Example St", // REQUIRED
-            "building" => "5B",   // REQUIRED
+            "apartment" => "12",
+            "floor" => "3",
+            "street" => "Some Street",
+            "building" => "123",
             "shipping_method" => "PKG",
             "postal_code" => "12345",
             "state" => "Cairo"
         ];
+
         // Step 3: Get payment key
-        $paymentKey = $this->paymob->getPaymentKey($authToken, $order['id'], $totalAmount, env('PAYMOB_INTEGRATION_ID'), $billingData);
+        $paymentKey = $this->paymob->getPaymentKey(
+            $authToken,
+            $paymobOrder['id'],
+            $totalAmount,
+            env('PAYMOB_INTEGRATION_ID'),
+            $billingData
+        );
 
         if (!isset($paymentKey['token'])) {
-            return back()->with('status', 'Payment key generation failed');
+            return back()->with('status', 'Failed to generate payment key');
         }
 
-        // Step 4: Redirect to Paymob payment iframe
+        // Step 4: Redirect to Paymob Iframe
         return redirect($this->paymob->getIframeUrl($paymentKey['token']));
     }
-    
+
 }
