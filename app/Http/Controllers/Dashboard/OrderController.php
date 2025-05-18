@@ -23,7 +23,11 @@ class OrderController extends Controller
 
         return view('dashboard.orders.index', compact('orders'));
     }
-
+    public function show(Order $order)
+    {
+        $order->load(['items.product', 'user']);
+        return view('dashboard.orders.show', compact('order'));
+    }
 
     public function updateStatus(Request $request, Order $order)
     {
