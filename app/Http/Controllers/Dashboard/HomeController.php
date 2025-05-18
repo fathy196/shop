@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,10 +15,11 @@ class HomeController extends Controller
     {
         $categories = Category::get();
         $products = Product::get();
+        $orders = Order::get();
         $users = User::where('is_admin', false)->get();
 
 //  dd($categories);
-        return view('dashboard.index',compact('categories','products','users'));
+        return view('dashboard.index',compact('categories','products','users','orders'));
     }
     
     public function showUsers()

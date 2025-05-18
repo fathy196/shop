@@ -41,6 +41,13 @@
         </a>
        
     </li>
+    <li class="nav-item {{ request()->is('dashboard/orders') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('dashboard.orders.index') }}">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>Orders</span>
+        </a>
+       
+    </li>
 
     <!-- Nav Item - Utilities Collapse Menu -->
     {{-- <li class="nav-item">
