@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
+    use AuthorizesRequests;
 
     public function index()
     {
@@ -23,6 +25,7 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
+        $this->authorize('view', $order);
         $order->load(['items.product', 'user']);
         return view('orders.show', compact('order'));
     }
@@ -98,6 +101,7 @@ class OrderController extends Controller
 
     public function confirmation(Order $order)
     {
+        $this->authorize('view', $order);
         $order->load(['items.product', 'user']);
         return view('orders.confirmation', compact('order'));
     }

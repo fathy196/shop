@@ -27,7 +27,7 @@ Route::middleware(['is_admin'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductController::class)->except('show')->middleware('is_admin');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::patch('orders/{order}/update-status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 
 });

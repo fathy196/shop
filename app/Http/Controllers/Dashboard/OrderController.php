@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -32,8 +33,17 @@ class OrderController extends Controller
     public function updateStatus(Request $request, Order $order)
     {
         $request->validate(['status' => 'required|in:pending,approved,shipped,cancelled']);
-        $order->update(['status' => $request->status]);
+        DB::transaction(function () use ($order, $request) {
+            // Update the order status
+            $order->update([
+                'status' => $request->status,
+            ]);
 
+            // Update all related order items
+            $order->items()->update([
+                'status' => $request->status,
+            ]);
+        });
         return redirect()->back()->with('status', 'Order status updated.');
     }
 

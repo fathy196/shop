@@ -41,6 +41,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.view');
     Route::patch('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
     Route::delete('/cart/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+
+Route::resource('orders', OrderController::class)->only(['index', 'show']);
+
+// Checkout process routes
+Route::get('checkout', [OrderController::class, 'checkout'])->name('checkout');
+Route::post('checkout', [OrderController::class, 'placeOrder'])->name('checkout.process');
+Route::get('orders/{order}/confirmation', [OrderController::class, 'confirmation'])->name('orders.confirmation');
+
+Route::get('/paymob/checkout/{order_id}', [CheckoutController::class, 'checkout'])->name('paymob.checkout');
+
 });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -62,11 +72,3 @@ require __DIR__ . '/auth.php';
 
 
 
-Route::resource('orders', OrderController::class)->only(['index', 'show']);
-
-// Checkout process routes
-Route::get('checkout', [OrderController::class, 'checkout'])->name('checkout');
-Route::post('checkout', [OrderController::class, 'placeOrder'])->name('checkout.process');
-Route::get('orders/{order}/confirmation', [OrderController::class, 'confirmation'])->name('orders.confirmation');
-
-Route::get('/paymob/checkout/{order_id}', [CheckoutController::class, 'checkout'])->name('paymob.checkout');
