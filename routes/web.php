@@ -18,6 +18,7 @@ Route::get('/send-email', [CategoryController::class, 'sendEmail']);
 // Route::post('/paymob/callback', [PaymentController::class, 'handleCallback']);
 // Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 
+Route::match(['GET','POST'],'/payment/callback', [CheckoutController::class, 'paymentCallback'])->name('payment.callback');
 
 Route::get('orders', function () {
     return view('orders.index');
@@ -52,6 +53,7 @@ Route::get('orders/{order}/confirmation', [OrderController::class, 'confirmation
 Route::get('/paymob/checkout/{order_id}', [CheckoutController::class, 'checkout'])->name('paymob.checkout');
 
 });
+// Route::get('/payment/callback', [CheckoutController::class, 'paymentCallback'])->name('payment.callback');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/aboutus', [HomeController::class, 'aboutus'])->name('aboutus');

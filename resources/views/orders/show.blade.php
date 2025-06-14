@@ -26,7 +26,7 @@
                                     <th>Price</th>
                                     <th>Quantity</th>
                                     <th>Total</th>
-                                    <th>Status</th>
+                                    {{-- <th>Status</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -42,11 +42,11 @@
                                         <td>EGP {{ number_format($item->price, 2) }}</td>
                                         <td>{{ $item->quantity }}</td>
                                         <td>EGP {{ number_format($item->quantity * $item->price, 2) }}</td>
-                                        <td>
+                                        {{-- <td>
                                             <span class="badge bg-{{ $item->status == 'pending' ? 'warning' : ($item->status == 'approved' ? 'info' : ($item->status == 'shipped' ? 'primary' : 'danger')) }}">
                                                 {{ ucfirst($item->status) }}
                                             </span>
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                 @endforeach
                             </tbody>

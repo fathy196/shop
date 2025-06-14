@@ -34,7 +34,7 @@ class CheckoutController extends Controller
         $authToken = $this->paymob->getAuthToken();
 
         // Step 2: Create order on Paymob
-        $paymobOrder = $this->paymob->createOrder($authToken, $totalAmount, env('PAYMOB_MERCHANT_ID'));
+        $paymobOrder = $this->paymob->createOrder($authToken, $totalAmount, env('PAYMOB_MERCHANT_ID'), $order->id);
 
         if (!isset($paymobOrder['id'])) {
             return back()->with('status', 'Paymob order creation failed');
@@ -72,5 +72,23 @@ class CheckoutController extends Controller
         // Step 4: Redirect to Paymob Iframe
         return redirect($this->paymob->getIframeUrl($paymentKey['token']));
     }
+    public function paymentCallback(Request $request)
+    {
+        // Use merchant_order_id which matches your Laravel Order ID
+        $orderId = $request->input('merchant_order_id');
 
+        if (!$orderId || !is_numeric($orderId)) {
+            abort(400, 'Invalid callback: Missing order ID');
+        }
+
+        $order = Order::findOrFail($orderId);
+
+        // Update order status
+        $order->update([
+            'status' => 'approved',
+        ]);
+
+        return redirect()->route('orders.confirmation', $order->id)
+            ->with('success', 'Payment successful! Order confirmed.');
+    }
 }

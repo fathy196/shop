@@ -15,11 +15,11 @@
                 <li class="nav-item">
                     <a class="nav-link fw-semibold" href="{{ route('aboutus') }}" style="color: #333;">About</a>
                 </li>
-                <li class="nav-item dropdown">
+                {{-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle fw-semibold" href="#" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false" style="color: #333;">
                         Shop
-                    </a>
+                    </a> --}}
                     {{-- <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{{ route('products.index') }}">All Products</a></li>
                         <li>
@@ -27,8 +27,8 @@
                         </li>
                         <li><a class="dropdown-item" href="#!">Popular Items</a></li>
                         <li><a class="dropdown-item" href="#!">New Arrivals</a></li> --}}
-            </ul>
-            </li>
+            {{-- </ul>
+            </li> --}}
             </ul>
 
             <!-- Cart and Search Section (Visible Only for Authenticated Users) -->
